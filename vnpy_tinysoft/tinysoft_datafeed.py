@@ -73,8 +73,8 @@ class TinysoftDatafeed(BaseDatafeed):
 
         bars: List[BarData] = []
 
-        start_str: str = req.start.strftime("%Y%m%d")
-        end_str: str = req.end.strftime("%Y%m%d")
+        start_str: str = req.start.strftime("%Y%m%d.%H%M%S")
+        end_str: str = req.end.strftime("%Y%m%d.%H%M%S")
 
         cmd: str = (
             f"setsysparam(pn_cycle(),{tsl_interval}());"
