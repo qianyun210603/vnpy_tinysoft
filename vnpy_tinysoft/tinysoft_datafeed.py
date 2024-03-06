@@ -37,7 +37,7 @@ class TinysoftDatafeed(BaseDatafeed):
         self.username: str = SETTINGS["datafeed.username"]
         self.password: str = SETTINGS["datafeed.password"]
 
-        self.client: Client = None
+        self.client: Optional[Client] = None
         self.inited: bool = False
 
     def init(self, output: Callable = print) -> bool:
@@ -67,7 +67,12 @@ class TinysoftDatafeed(BaseDatafeed):
             if not n:
                 return []
 
-        symbol, exchange = extract_vt_symbol(req.vt_symbol)
+        symbol, exchange = req.symbol, req.exchange
+        if exchange == Exchange.CZCE:
+            this_year: int = datetime.now().year
+            digit_year: str = str(this_year)[2]
+            symbol = symbol[:-3] + digit_year + symbol[-3:]
+
         tsl_exchange: str = EXCHANGE_MAP.get(exchange, "")
         tsl_interval: str = INTERVAL_MAP[req.interval]
 
